@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/security 
+       http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+     
+    <security:http security="none" pattern="/styles/*"/>
+	<security:http security="none" pattern="/images/*"/>
+	<security:http security="none" pattern="/favicon.ico"/>
+	
+	<security:http auto-config="true">
+		<security:intercept-url pattern="/login.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+		<security:intercept-url pattern="/cpanel/**" access="ROLE_ADMIN" />
+		<security:logout invalidate-session="true" logout-url="/logout.do"/>
+		<security:form-login login-page="/login.do" 
+				always-use-default-target="true"
+				authentication-failure-url="/login.do?errors=true"
+				authentication-success-handler-ref="authenticationSuccessHandler" />		
+	</security:http>
+	<bean id="authenticationSuccessHandler" class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+	    <property name="useReferer" value="true" />
+	</bean>
+</beans>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<definition name="layout" template="/WEB-INF/jsp/ecm/template.jsp">
+	</definition>
+
+	<definition name="user.list" extends="layout">
+		<put-attribute name="title" value="Käyttäjät" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ecm/user/list.jsp" />
+	</definition>
+
+	<definition name="user.add" extends="layout">
+		<put-attribute name="title" value="Käyttäjän lisäys" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ecm/user/add.jsp" />
+	</definition>
+	
+	<definition name="user.edit" extends="layout">
+		<put-attribute name="title" value="käyttäjän muokkaus" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ecm/user/add.jsp" />
+	</definition>
+	
+	<definition name="user.details" extends="layout">
+		<put-attribute name="title" value="käyttäjän tiedot" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ecm/user/details.jsp" />
+	</definition>
+	
+	<definition name="site.management" extends="layout">
+		<put-attribute name="title" value="Sivuston hallinnointi" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ecm/management.jsp" />
+	</definition>
+	
+	<definition name="login" template="/WEB-INF/jsp/template.jsp">
+		<put-attribute name="title" value="Kirjautuminen" type="string" />
+		<put-attribute name="header" value="/WEB-INF/tiles/header.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/tiles/footer.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/tiles/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/login.jsp" />
+	</definition>
+	
+	<definition name="file.add" extends="layout">
+		<put-attribute name="title" value="Tiedoston luonti" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ecm/files/add.jsp" />
+	</definition>
+	
+	<definition name="file.list" extends="layout">
+		<put-attribute name="title" value="Tiedostot" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ecm/files/list.jsp" />
+	</definition>
+</tiles-definitions>

@@ -1,0 +1,323 @@
+body {
+	margin: 0;
+	padding: 0;
+	background-image: url('/ecm/resources/images/background-tile.png') ;
+	font-family: Verdana, sans-serif;
+	font-size: 10px;
+}
+
+#header {
+	height: 200px;
+	margin: auto 0;
+	background: url('/ecm/resources/images/header-stripe.png') transparent repeat-x;
+	color: #f0f0f0;
+	margin: 0;
+	padding: 0;
+}
+#header div.headerContent {
+	height: 140px;
+}
+
+#header h1 {
+	padding-top: 24px;
+	font-size: 250%;
+}
+
+#header a {
+	color : #f0f0f0;
+}
+
+#pageContainer {
+	width: 100%;
+}
+
+#pageContainer #headerStripe {
+	margin: auto 0;
+	background: url('/ecm/resources/images/background-stripe.png') transparent repeat-x; 
+	width: 100%;
+	height: 155px;
+	background-color: black;
+}
+
+#page, .page {
+	width: 960px;
+	border-radius: 10px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.page {
+	border-radius: 0;
+	height: 25px;
+}
+
+#page #body {
+	margin: auto 0;
+	border-radius: 10px;
+	padding:10px;
+	width: 940px;
+	background-color: #fafafa;
+}
+
+#sidebar {
+	float: right;
+	width: 200px;	
+	min-height: 240px;
+	padding: 4px;
+}
+
+#sidebar h1 {
+	display: block;
+	font-size: 120%;
+	border-bottom: 1px solid #d0d0d0;
+}
+
+#container {
+	padding: 8px;
+}
+
+#content {
+	min-height: 320px;
+	font-size: 120%;
+	width: 720px;
+}
+
+#footer {
+	text-align: center;
+	padding: 8px;
+	margin: 8px;
+	border-top: 1px solid #c0c0c0;
+	clear : both;
+}
+
+.panel {
+	border: 1px solid #d0d0d0;
+	padding: 8px;
+	margin: 8px 4px 16px 4px;
+	background: #fafafa;
+}
+
+.panel h1 {
+	font-size: 120%;
+	display: block;
+	background: #f0f0f0;
+	padding: 6px;
+	margin: -8px;
+	border-bottom: 1px solid #d0d0d0;
+	margin-bottom: 8px;
+}
+
+.odd {
+	background: #f0f0f0;
+}
+
+.even {
+	background: #ffffff;
+}
+
+.dataTable {
+	border-collapse: collapse;;
+	width: 100%;
+}
+
+.dataTable th {
+	background: #204080;
+	color: #f0f0f0;
+	padding: 6px;
+	border: 1px solid #f0f0f0;
+}
+
+.dataTable td {
+	border: 1px solid #d0d0d0;
+	padding: 4px;
+}
+
+.caption {
+	float: left;
+	width: 100px;
+}
+
+.formCaption {
+	float: left;
+	width: 100px;
+	padding-top: 4px;
+}
+
+.value {	
+	margin-right: 8px;
+}
+
+.errorMessage {
+	color: #ff0000;
+	font-weight: bold;
+}
+
+.property {
+	margin-bottom: 12px;
+}
+
+#menu {
+	width: 900px;
+	margin: auto;
+}
+
+div#navigation {
+	margin: auto 0;
+	width: 900px;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	height:30px;
+	padding-left: 10px;
+	background: url('/ecm/resources/images/menuBackground-left.png') transparent no-repeat;
+}
+div#navigation span.navEnd {
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	height: 30px;
+	width: 10px;
+	display: inline-block;
+	float: left;
+	background: url('/ecm/resources/images/menuBackground-right.png') transparent no-repeat;
+}
+div#navigation ul {
+	padding: 0;
+	padding-right: 10px;
+	height:30px;
+	margin:0;
+	float:left;
+	background: url('/ecm/resources/images/menuBackground.png') transparent repeat-x;
+	list-style-type: none;
+}
+
+div#navigation ul li {
+	display:inline;
+	margin-left: 25px;
+}
+
+div#navigation ul li.first {
+	margin-left:0;
+}
+
+div#navigation ul li a {
+	text-transform: uppercase;
+	font-size: 10px;
+	text-decoration: none;
+	display: inline-block;
+	height: 0;
+}
+div#navigation ul li a.active {
+	text-decoration: underline;
+}
+
+div#navigation ul li a span {
+	color: black;
+	font-weight: bold;
+}
+
+div#ecmLogin {
+	width: 500px;
+	margin: auto 0;
+}
+
+div#ecmLogin .ecmUsername {
+	width: 300px;
+}
+
+div#ecmLogin .ecmPassword {
+	width: 300px;
+}
+
+div#ecmLogin div.ecmUsername label,
+div#ecmLogin div.ecmUsername label span {
+	width: 70px;
+	display: inline-block;
+}
+
+div#ecmLogin .ecmPassword label,
+div#ecmLogin .ecmPassword label span {
+	width: 70px;
+	display: inline-block;
+}
+
+
+div#ecmLogin .ecmUsername #ecmUsernameInput {
+	
+}
+
+div#ecmLogin .ecmPassword #ecmPasswordInput {
+	
+}
+div.top {
+	margin-bottom: 20px;
+	height: 250px;
+}
+
+div.bottom {
+	margin-bottom: 20px;
+	height: 250px;
+}
+
+
+div.leftTop {
+	float:left;
+	width:49%;
+	margin-right: 1%;
+	height:100%;	
+}
+
+div.rightTop {
+	float:left;
+	width:49%;
+	margin-right: 1%;
+	height:100%;
+}
+div.leftBottom {
+	float:left;
+	width:49%;
+	margin-right: 1%;
+	height:100%;
+}
+
+div.rightBottom {
+	float:left;
+	width:49%;
+	margin-right: 1%;
+	height:100%;
+}
+
+
+div.leftColumn {
+	width:49%;
+	margin-right: 1%;
+	min-height: 75%;
+	float:left;
+}
+
+div.rightColumn {
+	width:49%;
+	margin-left: 1%;
+	min-height: 75%;
+	float:left;
+}
+
+#headerText {
+	height: 50px;
+	padding-top: 30px;
+}
+
+#headerText .unique {
+	font-size: 5em;
+	color: #42ac09;
+}
+
+#headerText .technologies {
+	font-size: 5em;
+	color: #fafafa;
+}
+
+#headerText .slogan {
+	font-size: 1.5em;
+	color: #fafafa;
+	display: block;
+	padding-left: 350px;
+}

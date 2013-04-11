@@ -1,0 +1,51 @@
+#ecmManagerToolbar {
+	padding: 10px;
+	margin:0 auto;
+	margin-bottom: 5px;
+	width: 95%;
+	height: 50px;
+	background-color: #fafafa;
+	border: 1px dashed gray;
+	font-family: Verdana, sans-serif;
+	font-size: 10px;
+}
+#ecmManagerToolbar #ecmToolbarLeftPart {
+	float:left;
+}
+
+#ecmManagerToolbar #ecmToolbarRightPart {
+	float:right;
+}
+
+#ecmManagerToolbar #ecmPageActions {
+	height: 25px;
+}
+
+#ecmManagerToolbar #ecmPageAttributes {
+	height: 25px;
+}
+
+#ecmManagerToolbar ul {
+	margin:0;
+	padding:0;
+	list-style: none;
+}
+
+#ecmManagerToolbar ul li {
+	display: inline;
+	margin-left: 10px;	
+}
+
+#ecmManagerToolbar ul li.first {
+	margin-left: 0px;
+}
+
+#ecmLoginUser {
+	font-weight: bold;
+}
+
+#ecmFileAdd .ecmFileContent input {
+	
+	width: 350px;
+	
+}

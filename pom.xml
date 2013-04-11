@@ -9,12 +9,12 @@
 	<scm>
 		<connection>scm:git:ssh://git@github.com/Timizki/ecm.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/Timizki/ecm.git</developerConnection>
-	  <tag>thymeleaf</tag>
+	  <tag>HEAD</tag>
   </scm>
 	<groupId>net.vksn.ecm</groupId>
 	<artifactId>ecm</artifactId>
 	<packaging>war</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>ecm</name>
 
 	<properties>

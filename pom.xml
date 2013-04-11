@@ -9,7 +9,8 @@
 	<scm>
 		<connection>scm:git:ssh://git@github.com/Timizki/ecm.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/Timizki/ecm.git</developerConnection>
-	</scm>
+	  <tag>thymeleaf</tag>
+  </scm>
 	<groupId>net.vksn.ecm</groupId>
 	<artifactId>ecm</artifactId>
 	<packaging>war</packaging>

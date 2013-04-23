@@ -10,27 +10,20 @@ import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.IterationTag;
 
-import net.vksn.ecm.comparator.NavigationItemComparator;
 import net.vksn.sitemap.model.SitemapItem;
-import net.vksn.sitemap.services.SitemapItemService;
-
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 public class NavigationLevel extends BodyTagSupport {
 	private static final long serialVersionUID = 1L;
 
 	private static final String PAGECONTEXT_STYLECLASS_ATTRIBUTE = "styleClass";
 
-	private SitemapItemService sitemapItemService;
 	private String var;
-	private SitemapItem sitemapItem;
 	private SitemapItem activeSitemapItem;
 	private SitemapItem itemToHandle;
-	private TreeSet<SitemapItem> currentLevelsItems;
-	private Iterator<SitemapItem> currentLevelIterator;
+	private Set<SitemapItem> levelsItems;
+	private Iterator<SitemapItem> levelIterator;
 	private int itemNumber = 0;
-
+	
 	public String getVar() {
 		return var;
 	}
@@ -39,6 +32,14 @@ public class NavigationLevel extends BodyTagSupport {
 		this.var = var;
 	}
 
+	public Set<SitemapItem> getLevelItems() {
+		return this.levelsItems;
+	}
+	
+	public void setLevelItems(Set<SitemapItem> levelsItems) {
+		this.levelsItems = levelsItems;
+	}
+	
 	public SitemapItem getActiveSitemapItem() {
 		return activeSitemapItem;
 	}
@@ -46,35 +47,12 @@ public class NavigationLevel extends BodyTagSupport {
 	public void setActiveSitemapItem(SitemapItem activeSitemapItem) {
 		this.activeSitemapItem = activeSitemapItem;
 	}
-
-	public SitemapItem getSitemapItem() {
-		return sitemapItem;
-	}
-
-	public void setSitemapItem(SitemapItem sitemapItem) {
-		this.sitemapItem = sitemapItem;
-	}
-
-	private Set<SitemapItem> getSiblings() {
-		Set<SitemapItem> siblings = null;
-		SitemapItem parent = sitemapItem.getParent();
-		if(parent != null) {
-			siblings = parent.getChildrens();
-		}
-		else {
-			siblings = sitemapItem.getSitemap().getSitemapItems();
-		}
-		return siblings;
-	}
-	
 	
 	@Override
 	public int doStartTag() throws JspException {
-		currentLevelsItems = new TreeSet<SitemapItem>(new NavigationItemComparator());
-		currentLevelsItems.addAll(getSiblings());
-		currentLevelIterator = currentLevelsItems.iterator();
-		if(currentLevelIterator.hasNext()) {
-			SitemapItem item = currentLevelIterator.next();
+		levelIterator = levelsItems.iterator();
+		if(levelIterator.hasNext()) {
+			SitemapItem item = levelIterator.next();
 			pageContext.setAttribute(var, item);
 			itemToHandle = item;
 			String styleClass = "first";
@@ -97,11 +75,11 @@ public class NavigationLevel extends BodyTagSupport {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if (currentLevelIterator.hasNext()) {
-			itemToHandle = currentLevelIterator.next();
+		if (levelIterator.hasNext()) {
+			itemToHandle = levelIterator.next();
 
 			StringBuffer styleClass = new StringBuffer();
-			if (itemNumber == currentLevelsItems.size() - 1) {
+			if (itemNumber == levelsItems.size() - 1) {
 				styleClass.append("last");
 			}
 			if (itemToHandle.equals(activeSitemapItem)) {
@@ -123,8 +101,8 @@ public class NavigationLevel extends BodyTagSupport {
 		
 		itemNumber = 0;
 		activeSitemapItem = null;
-		currentLevelIterator = null;
-		currentLevelsItems = null;
+		levelIterator = null;
+		levelsItems = null;
 		return super.doEndTag();
 	}
 }

@@ -3,6 +3,7 @@ package net.vksn.ecm.controllers.form;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import net.vksn.ecm.model.TilesDefinition;
 import net.vksn.sitemap.model.Sitemap;
@@ -14,9 +15,9 @@ public class SitemapItemForm {
 	private Sitemap sitemap;
 	private SitemapItem parent;
 	private List<TilesDefinition> templates;
-	private List<SitemapItem> sitemapItems;
+	private Set<SitemapItem> sitemapItems;
 	private Set<SitemapItem> siblings;
-	private int newPagePosition;
+	private Integer newPagePosition;
 
 	public SitemapItem getSitemapItem() {
 		return sitemapItem;
@@ -37,14 +38,14 @@ public class SitemapItemForm {
 		this.templates = templates;
 	}
 
-	public List<SitemapItem> getSitemapItems() {
+	public Set<SitemapItem> getSitemapItems() {
 		if (this.sitemapItems == null) {
-			this.sitemapItems = new ArrayList<SitemapItem>();
+			this.sitemapItems = new TreeSet<SitemapItem>();
 		}
 		return sitemapItems;
 	}
 
-	public void setSitemapItems(List<SitemapItem> sitemapItems) {
+	public void setSitemapItems(Set<SitemapItem> sitemapItems) {
 		this.sitemapItems = sitemapItems;
 	}
 
@@ -52,7 +53,7 @@ public class SitemapItemForm {
 		return siblings;
 	}
 
-	public void setSiblings(Set<SitemapItem> siblings) {
+	public void setSiblings(TreeSet<SitemapItem> siblings) {
 		this.siblings = siblings;
 	}
 
@@ -73,6 +74,9 @@ public class SitemapItemForm {
 	}
 
 	public int getNewPagePosition() {
+		if(this.newPagePosition == null) {
+			this.newPagePosition = sitemapItem.getPagePosition();
+		}
 		return newPagePosition;
 	}
 

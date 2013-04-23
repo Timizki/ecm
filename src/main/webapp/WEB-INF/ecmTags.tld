@@ -17,9 +17,9 @@
 			<required>true</required>
 		</attribute>
 		<attribute>
-			<name>sitemapItem</name>
+			<name>levelItems</name>
 			<required>true</required>
-			<type>net.vksn.sitemap.model.SitemapItem</type>
+			<type>java.util.Set</type>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
@@ -45,6 +45,11 @@
 		<attribute>
 			<name>sitemapId</name>
 			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>sitemapItem</name>
+			<rtexprvalue>true</rtexprvalue>
+			<type>net.vksn.sitemap.model.SitemapItem</type>
 		</attribute>
 		<attribute>
 			<name>sitemap</name>

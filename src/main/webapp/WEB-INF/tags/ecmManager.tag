@@ -21,7 +21,7 @@
 				<ul>
 					<c:choose>
 						<c:when test="${(mode eq 'edit' or mode eq 'addPage')}">
-							<li class="first"><a href="#" onclick="updateForm('');">Tallenna</a></li>
+							<li class="first"><a href="#" onclick="updateForm('store');">Tallenna</a></li>
 							<li class="first"><a href="?">Peruuta</a></li>
 						</c:when>
 						<c:otherwise>
@@ -39,7 +39,10 @@
 					<span>Yläsivu:</span>
 					<form:select path="parent" onchange="updateForm('parent')">
 						<form:option value="">Ei yläsivua</form:option>
-						<form:options items="${sitemapItemForm.sitemapItems}" itemLabel="name" itemValue="id"/>
+						<c:forEach var="item" items="${sitemapItemForm.sitemapItems}">
+							<form:option value="${item.id}">
+								<c:out value="${empty item.properties['title'] ? item.name : item.properties['title']}" escapeXml="true" /></form:option>
+						</c:forEach>
 					</form:select>
 					<span>Sivupohja:</span>
 					<form:select path="sitemapItem.decorationName" onchange="updateForm('decorationName')" 
@@ -48,7 +51,7 @@
 					<span>Järjestys:</span>
 					<form:select path="newPagePosition" onchange="updateForm('position')" >
 						<c:forEach var="pos" items="${sitemapItemForm.siblings}" varStatus="status">
-							<form:option value="${status.index}">${pos.name}</form:option>
+							<form:option value="${pos.pagePosition}"><c:out value="${empty pos.properties['title'] ? pos.name : pos.properties['title']}" escapeXml="true" /></form:option>
 						</c:forEach>
 					</form:select>
 						

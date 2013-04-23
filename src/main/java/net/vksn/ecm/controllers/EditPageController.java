@@ -1,6 +1,5 @@
 package net.vksn.ecm.controllers;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -8,10 +7,10 @@ import java.util.TreeSet;
 import javax.servlet.http.HttpServletRequest;
 
 import net.vksn.bedrock.exceptions.EntityNotFoundException;
-import net.vksn.ecm.comparator.NavigationItemComparator;
 import net.vksn.ecm.controllers.form.SitemapItemForm;
 import net.vksn.ecm.controllers.validator.SitemapItemFormValidator;
 import net.vksn.ecm.converter.SitemapItemEditor;
+import net.vksn.ecm.helper.Organizator;
 import net.vksn.ecm.model.TilesDefinition;
 import net.vksn.ecm.service.DefinitionService;
 import net.vksn.sitemap.model.Sitemap;
@@ -36,7 +35,7 @@ public class EditPageController extends AbstractPageController {
 
 	@Autowired
 	private SitemapItemService sitemapItemService;
-
+	
 	@Autowired
 	private SitemapService sitemapService;
 
@@ -70,114 +69,90 @@ public class EditPageController extends AbstractPageController {
 	public SitemapItemForm getForm(@RequestParam String mode, ModelMap model,
 			HttpServletRequest request) throws EntityNotFoundException {
 		SitemapItemForm form = null;
-		if(model.containsAttribute("sitemapItemForm")) {
-			form = (SitemapItemForm) model.get("sitemapItemForm");
-		}
+		form = new SitemapItemForm();
+		int sitemapId = getSitemapId(request);
+		String[] path = getPagePath(request);
+		SitemapItem item = null;
+		TreeSet<SitemapItem> orderedItems = new TreeSet<SitemapItem>();
+		List<TilesDefinition> templates = getDefinitions();
+		if ("edit".equals(mode)) {
+			item = sitemapItemService.getItemByPath(sitemapId, path);
+			orderedItems.addAll(sitemapItemService.getSiblings(item));
+			form.setSiblings(orderedItems);
+			Sitemap sitemap = sitemapService.getSitemap(sitemapId, false);
+			form.setSitemap(sitemap);
+		} 
 		else {
-			form = new SitemapItemForm();
-			int sitemapId = getSitemapId(request);
-			String[] path = getPagePath(request);
-			SitemapItem item = null;
-	
-			List<TilesDefinition> templates = getDefinitions();
-			if ("edit".equals(mode)) {
-				item = sitemapItemService.getItemByPath(sitemapId, path);
-				form.setSiblings(sitemapItemService.getSiblings(item));
-				Sitemap sitemap = sitemapService.getSitemap(sitemapId, false);
-				form.setSitemap(sitemap);
-			} else {
-				item = new SitemapItem();
-				Sitemap sitemap = sitemapService.getSitemap(sitemapId, false);
-				form.setSitemap(sitemap);
-				item.setSitemap(sitemap);
-				item.setDecorationName(templates.iterator().next().getName());
-				form.setSiblings(sitemap.getSitemapItems());
-			}
-	
-			form.setSitemapItem(item);
-			form.setSitemapItems(sitemapItemService.getAllSitemapItems(sitemapId));
-			form.setTemplates(templates);
-			model.addAttribute("sitemapItemForm", form);
+			item = new SitemapItem();
+			Sitemap sitemap = sitemapService.getSitemap(sitemapId, false);
+			form.setSitemap(sitemap);
+			item.setSitemap(sitemap);
+			item.setDecorationName(templates.iterator().next().getName());
+			
+			orderedItems.addAll(sitemap.getSitemapItems());
+			form.setSiblings(orderedItems);
+			item.setPagePosition(orderedItems.size());
 		}
+
+		form.setSitemapItem(item);
+		TreeSet<SitemapItem> positions = new TreeSet<SitemapItem>();
+		positions.addAll(sitemapItemService.getAllSitemapItems(sitemapId));
+		form.setSitemapItems(positions);
+		form.setTemplates(templates);
+		model.addAttribute("sitemapItemForm", form);
 		return form;
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST, params="action=position")
+	public String updatePagePosition(@ModelAttribute("sitemapItemForm") SitemapItemForm form, BindingResult result) {
+		TreeSet<SitemapItem> siblings = new TreeSet<SitemapItem>();
+		if(form.getSitemapItem().getParent() == null) {
+			siblings.addAll(form.getSitemapItem().getSitemap().getSitemapItems());
+		}
+		else {
+			siblings.addAll(form.getSitemapItem().getParent().getChildrens());
+		}
+		new Organizator().updatePositions(siblings, form.getSitemapItem().getPagePosition(), form.getNewPagePosition(), form.getSitemapItem());
+		form.getSitemapItem().getSitemap().setSitemapItems(siblings);
+		form.setSitemapItems(siblings);
+		form.setSiblings(siblings);
+		return form.getSitemapItem().getDecorationName();
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, params="action=parent")
+	public String updatePageParent(@ModelAttribute("sitemapItemForm") SitemapItemForm form, BindingResult result) {
+		if(form.getParent() != null) {
+			form.getSitemapItem().getSitemap().getSitemapItems().remove(form.getSitemapItem());
+		}
+		Set<SitemapItem> items = sitemapItemService.getSiblings(form
+				.getParent());
+		TreeSet<SitemapItem> orderedItems = new TreeSet<SitemapItem>();
+		orderedItems.addAll(items);
+		form.setSiblings(orderedItems);
+		form.getSitemapItem().setParent(form.getParent());
+		return form.getSitemapItem().getDecorationName();
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, params="action=decorationName")
+	public String updateDecoration(@ModelAttribute("SitemapItemForm") SitemapItemForm form, BindingResult result) {
+		return form.getSitemapItem().getDecorationName();
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, params="action=store")
 	public ModelAndView storePage(
 			@ModelAttribute("sitemapItemForm") SitemapItemForm form, BindingResult result, HttpServletRequest request)
 			throws EntityNotFoundException {
 		ModelAndView mv = null;
 		new SitemapItemFormValidator().validate(form, result);
 
-		String action = request.getParameter("action");
-
-		if ("decorationName".equals(action)) {
-			return new ModelAndView(form.getSitemapItem().getDecorationName());
-		} else if ("parent".equals(action)) {
-			Set<SitemapItem> items = sitemapItemService.getSiblings(form
-					.getParent());
-			form.setSiblings(items);
-			form.getSitemapItem().setParent(form.getParent());
-			mv = new ModelAndView(form.getSitemapItem().getDecorationName());
-			return mv;
-		} else if ("position".equals(action)) {
-			adjustPositions(form);
-			mv = new ModelAndView(form.getSitemapItem().getDecorationName());
-			mv.addObject("sitemapItemForm", form);
-			return mv;
-		}
 		if (result.hasErrors()) {
 			mv = new ModelAndView(form.getSitemapItem().getDecorationName());
 			return mv;
 		}
-
+		form.getSitemapItem().setPagePosition(form.getNewPagePosition());
 		sitemapItemService.storeSitemapItem(form.getSitemapItem());
 
 		return new ModelAndView("redirect:/" + form.getSitemapItem().getPathAsString() + ".html");
 	}
 	
-	private void adjustPositions(SitemapItemForm form) throws EntityNotFoundException {
-		
-
-		SitemapItem parent = form.getSitemapItem().getParent();
-		TreeSet<SitemapItem> siblings = new TreeSet<SitemapItem>(new NavigationItemComparator());
-		if (parent != null) {
-			siblings.addAll(parent.getChildrens());
-		}
-		else {
-			Sitemap sitemap = sitemapService.getSitemap(form
-					.getSitemapItem().getSitemap().getId(), false);
-			siblings.addAll(sitemap.getSitemapItems());
-		}
-		// 0 => 6
-		// 0 1 2 3 4 5 6 
-		//   < < < < < <
-		// 3 => 6
-		// 0 1 2  <4<5<6
-		// 6 => 3
-		// 0 1 2 3 4>5>
-		
-		boolean moveDirectionToBigger = form.getNewPagePosition() > form.getSitemapItem().getPagePosition();
-		int oldPosition = form.getSitemapItem().getPagePosition();
-		for (Iterator<SitemapItem> i = siblings.iterator(); i.hasNext();) {
-			SitemapItem item = i.next();
-			if(item.getName().equals(form.getSitemapItem().getName())) {
-				i.remove();
-			}
-			if(moveDirectionToBigger) {
-				if (item.getPagePosition() > oldPosition) {
-					item.setPagePosition(item.getPagePosition() - 1);
-				}
-			}
-			else {
-				if (item.getPagePosition() >= form.getNewPagePosition()) {
-					item.setPagePosition(item.getPagePosition() + 1);
-				}
-			}
-		}
-		form.getSitemapItem().setPagePosition(form.getNewPagePosition());
-		siblings.add(form.getSitemapItem());
-		form.getSitemap().setSitemapItems(siblings);
-	}
-
 }

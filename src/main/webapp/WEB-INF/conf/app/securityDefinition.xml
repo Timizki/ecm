@@ -14,7 +14,7 @@
 	<security:http auto-config="true">
 		<security:intercept-url pattern="/login.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 		<security:intercept-url pattern="/cpanel/**" access="ROLE_ADMIN" />
-		<security:logout invalidate-session="true" logout-url="/logout.do"/>
+		<security:logout invalidate-session="true" logout-success-url="/"/>
 		<security:form-login login-page="/login.do" 
 				always-use-default-target="true"
 				authentication-failure-url="/login.do?errors=true"

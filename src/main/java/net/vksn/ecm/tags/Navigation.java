@@ -32,7 +32,7 @@ public class Navigation extends BodyTagSupport {
 	private Integer sitemapId;
 	private Sitemap sitemap;
 	private List<SitemapItem> path = new ArrayList<SitemapItem>();
-	
+
 	public String getVar() {
 		return var;
 	}
@@ -58,8 +58,10 @@ public class Navigation extends BodyTagSupport {
 	}
 
 	public Sitemap getSitemap() {
-		if(this.sitemap == null) {
-			WebApplicationContext webContext = WebApplicationContextUtils.getRequiredWebApplicationContext(pageContext.getServletContext());
+		if (this.sitemap == null) {
+			WebApplicationContext webContext = WebApplicationContextUtils
+					.getRequiredWebApplicationContext(pageContext
+							.getServletContext());
 			SitemapService service = webContext.getBean(SitemapService.class);
 			try {
 				this.sitemap = service.getSitemap(this.sitemapId, true);
@@ -69,24 +71,24 @@ public class Navigation extends BodyTagSupport {
 		}
 		return sitemap;
 	}
-	
+
 	public void setSitemap(Sitemap sitemap) {
 		this.sitemap = sitemap;
 	}
-	
+
 	public Integer getSitemapId() {
 		return sitemapId;
 	}
-	
+
 	public void setSitemapId(Integer sitemapId) {
 		this.sitemapId = sitemapId;
 	}
-	
+
 	@Override
 	public int doStartTag() throws JspException {
 		buildPath();
 		Set<SitemapItem> sitemapItems = getSitemap().getSitemapItems();
-		if(!sitemapItems.isEmpty()) {
+		if (!sitemapItems.isEmpty()) {
 			pageContext.setAttribute(var, sitemapItems);
 			return BodyTag.EVAL_BODY_BUFFERED;
 		}
@@ -94,23 +96,16 @@ public class Navigation extends BodyTagSupport {
 	}
 
 	private void buildPath() {
-		path.add(sitemapItem);
-		SitemapItem parent = sitemapItem.getParent();
-		while(parent != null) {
-			path.add(parent);
-			parent = parent.getParent();
-		}
-		Collections.reverse(path);
-	}
+		if (sitemapItem != null) {
+			path.add(sitemapItem);
 
-	private Set<SitemapItem> getLevelsSitemapItems() {
-		Iterator<SitemapItem> i = path.iterator();
-		Set<SitemapItem> items = null;
-		if(i.hasNext()) {
-			items = i.next().getChildrens();
-			i.remove();
+			SitemapItem parent = sitemapItem.getParent();
+			while (parent != null) {
+				path.add(parent);
+				parent = parent.getParent();
+			}
+			Collections.reverse(path);
 		}
-		return items;
 	}
 
 	@Override
@@ -122,16 +117,16 @@ public class Navigation extends BodyTagSupport {
 			bodyContent.clear();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
+		}
 		Iterator<SitemapItem> pathIterator = path.iterator();
-		if (round < depth && pathIterator.hasNext()) {			
+		if (round < depth && pathIterator.hasNext()) {
 			pageContext.setAttribute(var, pathIterator.next().getChildrens());
 			round++;
 			return IterationTag.EVAL_BODY_AGAIN;
 		}
 		return Tag.SKIP_BODY;
 	}
-	
+
 	@Override
 	public int doEndTag() throws JspException {
 		path = null;

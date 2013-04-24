@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,12 +19,10 @@ public class LoginController {
 		
 	}
     @RequestMapping(value="/login.do", method=RequestMethod.GET)
-    public String handleLogin(HttpServletRequest request) {
+    public String handleLogin(ModelMap model, HttpServletRequest request) {
     	log.debug("Entry::LoginController.handleLoginForm()");
-        String errParam = request.getParameter("error");
-        ModelAndView mv = new ModelAndView("login");
-        if(errParam != null) {
-            mv.addObject("errorMessage", "Kirjautuminen epäonnistui");
+        if(request.getUserPrincipal() == null) {
+            model.addAttribute("errorMessage", "Kirjautuminen epäonnistui, ole hyvä ja yritä uudelleen.");
         }
         log.debug("Exiting::LoginController.handleLoginForm()");
         return "login";

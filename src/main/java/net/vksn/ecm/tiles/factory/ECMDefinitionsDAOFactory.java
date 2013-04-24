@@ -1,7 +1,5 @@
 package net.vksn.ecm.tiles.factory;
 
-import java.util.Locale;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tiles.Definition;
@@ -9,7 +7,6 @@ import org.apache.tiles.definition.DefinitionsFactory;
 import org.apache.tiles.definition.NoSuchDefinitionException;
 import org.apache.tiles.definition.dao.DefinitionDAO;
 import org.apache.tiles.request.Request;
-import org.hibernate.criterion.ExistsSubqueryExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

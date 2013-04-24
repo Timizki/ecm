@@ -3,7 +3,6 @@ package net.vksn.ecm.tags;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyContent;

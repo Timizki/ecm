@@ -39,13 +39,6 @@ public class AddDefinitionController {
 	 */
 	@RequestMapping(value = "*.do", method = RequestMethod.GET)
 	public String showForm(Model model, HttpServletRequest request) {
-		TilesDefinition definition = null;
-		if (!model.containsAttribute("definition")) {
-			Map modelMap = model.asMap();
-			definition = (TilesDefinition) modelMap.get("definition");
-		} else {
-			definition = new TilesDefinition();
-		}
 		return "form";
 	}
 

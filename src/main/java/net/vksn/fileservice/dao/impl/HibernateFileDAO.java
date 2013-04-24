@@ -55,6 +55,7 @@ public class HibernateFileDAO implements FileDAO {
 		session.flush();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Set<File> getAllFiles() {
 		Session session = factory.openSession();

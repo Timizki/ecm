@@ -4,8 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import net.vksn.bedrock.model.Entity;
 
 @javax.persistence.Entity

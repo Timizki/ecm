@@ -1,12 +1,15 @@
 package net.vksn.ecm.cpanel.controllers;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import net.vksn.bedrock.exceptions.EntityNotFoundException;
+import net.vksn.bedrock.model.Group;
 import net.vksn.bedrock.model.User;
 import net.vksn.bedrock.query.UserQuery;
+import net.vksn.bedrock.services.GroupService;
 import net.vksn.bedrock.services.UserService;
 import net.vksn.ecm.cpanel.controllers.form.UserForm;
 
@@ -24,12 +27,15 @@ public class UserController extends AbstractCancelController {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private GroupService groupService;
 	
 	
 	@ModelAttribute("userForm")
 	public UserForm getModelAttribute() throws EntityNotFoundException {
 		UserForm form = new UserForm();
 		form.setUser(new User());
+		form.setGroups((List<Group>)groupService.getAllGroups());
 		return form;
 	}
 	
@@ -37,6 +43,7 @@ public class UserController extends AbstractCancelController {
 		User user = userService.getUserByUsername(username);
 		UserForm form = new UserForm();
 		form.setUser(user);
+		form.setGroups((List<Group>)groupService.getAllGroups());
 		return form;
 	}
 	
